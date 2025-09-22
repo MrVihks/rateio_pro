@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>Rateio Pro</title>
+    <style>
+      :root{
+        --brand-color: #1E2631;
+        --light-color:#EDF0F3;
+        --mid-color:#DBE0E6;
+        --dark-color:#171C22;
+
+        --start-color:#00B021;
+        --start-color-dark: color-mix(in srgb, var(--start-color) 80%, black);
+
+        --error-color:#F27D7F;
+        --error-color-dark: color-mix(in srgb, var(--error-color) 80%, black);
+
+        --warning-color:#DBC143;
+        --warning-color-dark: color-mix(in srgb, var(--warning-color) 80%, black);
+
+        --link-color:#4256D7;
+        --border-color:#C6D0D7;
+      }
+      
+      *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .section{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        align-items: center;
+
+        background-color: var(--mid-color);
+
+        padding: 40px;
+      }
+
+      .input{
+        display: flex;
+        
+        padding: 15px;
+
+        width: 100%;
+        
+        border: 1.2px solid var(--brand-color);
+        border-radius: 5px;
+        
+        background-color: var(--light-color);
+
+        font-weight: 400;
+        font-size: 1rem;
+      }
+      .title{
+        font-family: "Montserrat";
+        font-weight: bold;
+        font-size: 2.5rem;
+    
+        color: var(--dark-color);
+      }
+      .subtitle{
+        font-family: "Montserrat";
+        font-weight: 500;
+        font-size: 1.5rem;
+    
+        color: var(--dark-color);
+      }
+      .paragraph{
+        font-family: "Lato";
+        font-size: 1rem;
+        font-weight: 400;
+
+        color: var(--dark-color);
+      }
+      .text-center{
+        text-align: center;
+      }
+      .bold{
+        font-weight: bold;
+      }
+      .link{
+        font-size: 1rem;
+        font-weight: bold;
+        font-family: "Lato";
+        text-decoration: underline;
+        
+        color: var(--link-color);
+      }
+      .input_container{
+        position: relative;
+
+        min-width: 300px;
+
+        margin-top: 15px;
+
+        font-family: "Lato";
+        color: var(--brand-color);
+      }
+      .placeholder{
+        position: absolute;
+        top: -10px;
+        left: 10px;
+          
+        background-color: var(--light-color);
+      }
+      .card{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+
+        border: 2px solid var(--border-color);
+        border-radius: 6px;
+        
+        background-color: var(--light-color);
+
+        width: 50%;
+
+        padding: 30px 5px;
+      }
+      .btn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 15px;
+       
+        min-width: 300px;
+
+        font-family: "Lato";
+        font-weight: 400;
+        font-size: 1rem;
+
+        border: none;
+        border-radius: 5px;
+
+        color: var(--light-color);
+        
+        transition-duration: 300ms;
+      }
+      .start{
+        background-color: var(--start-color);
+      }
+      .start:hover{
+        background-color: var(--start-color-dark);
+      }
+      .error{
+        background-color: var(--error-color);
+      }
+      .error:hover{
+        background-color: var(--error-color-dark);
+      }
+      .warning{
+        background-color: var(--warning-color);
+      }
+      .warning:hover{
+        background-color: var(--warning-color-dark);
+      }
+      .invisible{
+        display: none;
+      }
+      .full{
+        min-height: 100vh;
+      }
+      .navbar{
+        width: 100%;
+        height: 65px;
+
+        background-color: var(--brand-color);
+      }
+    </style>
+
+
+</head>
+<body>
+    <nav class="navbar">
+
+    </nav>
+    <section id="render">
+
+    </section>
+
+    <section id="main" class="full section">
+      <h1 class="title">Criar Rateio</h1>
+        <article class="card">
+            <h2 class="subtitle">Configurações iniciais</h2>
+            <p class="input_container">
+                <label for="teste" class="placeholder">Quantidade de computadores</label>
+                <input type="text" name="teste" class="input">
+            </p>
+             <button onclick="generateExcel()" class="btn start">Gerar XLSX com Tabela</button>
+             <button class="btn warning">Validar</button>
+             <p class="paragraph text-center" style="width: 400px;">Para iniciar a criação de um rateio, é necessário ter o
+<span class="bold">CSV do GLPI</span> e a <span class="bold">planilha do sistema ponto.</span></p>
+            <a href="" class="link">Saiba mais</a>
+
+        </article>
+    </section>
+
+    <section id="create" class="full invisible">
+    </section>
+    <section id="loading" class="full invisible">
+        
+    </section>
+  
+
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+    <script>
+        async function generateExcel() {
+            // Criar um novo workbook
+            const workbook = new ExcelJS.Workbook();
+            workbook.creator = 'Seu Nome';
+            workbook.created = new Date();
+
+            // Adicionar uma worksheet
+            const sheet = workbook.addWorksheet('Minha Planilha');
+
+            // Adicionar dados à planilha
+            sheet.addRow(['ID', 'Nome', 'Idade', 'Salário']); // Cabeçalhos
+            sheet.addRow([1, 'João Silva', 30, 5000]);
+            sheet.addRow([2, 'Maria Oliveira', 25, 4500]);
+            sheet.addRow([3, 'Pedro Santos', 40, 6000]);
+
+            // Definir a tabela
+            sheet.addTable({
+                name: 'MinhaTabela', // Nome único da tabela
+                ref: 'A1:D4', // Intervalo da tabela (A1 até D4, incluindo cabeçalhos)
+                headerRow: true, // Indica que a primeira linha é o cabeçalho
+                totalsRow: false, // Desativa linha de totais (opcional)
+                style: {
+                    theme: 'TableStyleMedium9', // Estilo predefinido do Excel
+                    showRowStripes: true, // Linhas alternadas com cores
+                    showFilterButton: true // Ativa botões de filtro
+                },
+                columns: [
+                    { name: 'ID', filterButton: true },
+                    { name: 'Nome', filterButton: true },
+                    { name: 'Idade', filterButton: true },
+                    { name: 'Salário', filterButton: true }
+                ],
+                rows: [
+                    [1, 'João Silva', 30, 5000],
+                    [2, 'Maria Oliveira', 25, 4500],
+                    [3, 'Pedro Santos', 40, 6000]
+                ]
+            });
+
+            // Opcional: Ajustar formatação adicional
+            const table = sheet.getTable('MinhaTabela');
+            if (table && table.ref) {
+                table.ref.split(':').forEach(cell => {
+                    sheet.getCell(cell).border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' }
+                    };
+                });
+            } else {
+                console.error('Tabela não encontrada ou ref está indefinido.');
+            }
+
+            // Gerar o arquivo e fazer download
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'tabela_formatada.xlsx';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+    </script>
+
+    <script>
+
+        const sections = [{id:1, cssId:"main"},{id:2, cssId:"create"}]
+        
+        function renderSection(section){
+            const render = document.querySelector("#render");
+            render.innerHTML = section.innerHTML;
+        }
+        
+
+        renderSection(document.querySelector(`#${sections[1].cssId}`))
+    </script>
+</body>
+</html>
