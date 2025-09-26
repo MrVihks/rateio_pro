@@ -265,9 +265,75 @@
           scale: 1;
         }
       }
+
+      .ticket_header{
+        display: flex;
+        gap:10px;
+        padding: 15px;
+
+        background-color: var(--light-color);
+        
+        border: 2px solid var(--border-color);
+        border-radius: 5px;
+
+        width: 100%;
+      }
+      .ticket_header_column li{
+        display: flex;
+        gap:5px;
+        padding: 5px;
+      }
+      
+      .ticket_container{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        width: 75%;
+      }
+      .ticket_info{
+        display: flex;
+        flex-direction: column;
+        gap:10px;
+        padding: 15px;
+
+        background-color: var(--light-color);
+        
+        border: 2px solid var(--border-color);
+        border-radius: 5px;
+
+        width: 50%;
+      }
+      .ticket_info_container{
+        display: flex;
+        
+        gap: 20px;
+      }
+      .ticket_config{
+        display: flex;
+        flex-direction: column;
+        gap:10px;
+        padding: 15px;
+
+        background-color: var(--light-color);
+        
+        border: 2px solid var(--border-color);
+        border-radius: 5px;
+
+        width: 60%;
+      }
+      .buttons_container{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      textarea{
+        min-width:  100%;
+        max-width: 100%;
+        min-height: 100px;
+        max-height: 150px;
+      }
     </style>
-
-
 </head>
 <body>
     <nav class="navbar">
@@ -300,28 +366,21 @@
       </div>
     </div>
 
-    <section id="render">
-
-    </section>
-
-    <section id="main" class="full section">
+    <section id="main" class="full section hidden">
       <h1 class="title">Criar Rateio</h1>
         <article class="card">
             <h2 class="subtitle">Configurações iniciais</h2>
-            <p class="input_container">
-                <label for="teste" class="placeholder">Quantidade de computadores</label>
-                <input type="text" name="teste" class="input">
-            </p>
+           
             <p class="file_input_container">
                 <label for="rateio_file" class="custom_file_input">
                   <a class="placeholder">Enviar planilha do GLPI</a>
-                  <input type="file" name="rateio_file" id="rateio_file" class="input">
+                  <input type="file" name="rateio_file" id="rateio_file" class="input" accept=".xls, .xlsx, .csv">
                 </label>
             </p>
             <p class="file_input_container">
               <label for="ponto_file" class="custom_file_input">
                 <a class="placeholder">Enviar planilha do ponto</a>
-                <input type="file" name="rateio_file" id="rateio_file" class="input">
+                <input type="file" name="ponto_file" id="ponto_file" class="input" accept=".xls, .xlsx, .csv">
               </label>
             </p>
             <button onclick="generateExcel()" class="btn start" disabled>Iniciar</button>
@@ -332,11 +391,59 @@
         </article>
     </section>
 
-    <section id="create" class="full invisible">
-    </section>
-    <section id="loading" class="full invisible">
-        
-    </section>
+    <section id="tickets" class="full section">
+        <h1 id="ticket_title" class="title" style="font-weight: 500;">Entrega de cadeiras(<a id="ticket_url" style="text-decoration: underline; cursor: pointer;" class="bold title">995954</a>)</h1>
+
+        <section class="ticket_container">
+          <article class="ticket_header">
+            <ul class="ticket_header_column">
+              <li><p class="paragraph bold">Requerente</p>:<p class="paragraph" id="ticket_author"></p></li>
+              <li><p class="paragraph bold">Data de abertura</p>:<p class="paragraph" id="ticket_opendate"></p></li>
+              <li><p class="paragraph bold">Andar</p>:<p class="paragraph" id="ticket_floor"></p></li>
+            </ul>
+            <ul class="ticket_header_column">
+              <li><p class="paragraph bold">Filial</p>:<p class="paragraph" id="ticket_office"></p></li>
+              <li><p class="paragraph bold">Atribuido</p>:<p class="paragraph" id="ticket_assigned"></p></li>
+              <li><p class="paragraph bold">Data de solução</p>:<p class="paragraph" id="ticket_solutiondate"></p></li>
+            </ul>
+          </article>
+          <section class="ticket_info_container">
+            <article class="ticket_info">
+              <h2 class="subtitle">Descrição do chamado</h2>
+              <p class="paragraph" id="ticket_description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, hic cupiditate alias accusamus aperiam libero laboriosam voluptatibus culpa error, tenetur nostrum officia sit. Et id neque cupiditate dolorum aliquid tenetur?</p>
+            </article>
+            <article class="ticket_config">
+              <div>
+                <p class="input_container">
+                  <label for="ticket_items" class="placeholder">Dispositivos no chamado</label>
+                  <input type="text" id="ticket_items" name="ticket_items" class="input">
+                  <p class="paragraph bold">0 Dispositivos encontrados</p>
+                </p>
+                <p class="input_container" style="margin-top: 25px;">
+                  <label for="ticket_cpfs" class="placeholder">CPFs</label>
+                  <textarea type="text" id="ticket_cpfs" name="ticket_cpfs" class="input"></textarea>
+                  <p class="paragraph bold">0 CPFs encontrados</p>
+                </p>
+                <p class="input_container" style="margin-top: 25px;">
+                  <label for="ticket_patrim" class="placeholder">Patrimônios</label>
+                  <textarea type="text" id="ticket_patrim" name="ticket_patrim" class="input"></textarea>
+                  <p class="paragraph bold">0 Patrimônios encontrados</p>
+                </p>
+                <p class="input_container" style="margin-top: 25px;">
+                  <label for="ticket_separator" class="placeholder">Separador</label>
+                  <input type="text" id="ticket_separator" name="ticket_separator" class="input"></input>
+                  <p class="paragraph bold">(-) é o separador selecionado</p>
+                </p>
+              </div>
+              <div class="buttons_container">
+                  <button onclick="" class="btn start">Salvar</button>
+                  <button class="btn error">Deletar</button>
+                  <button class="btn warning">Ver todos os chamados</button>
+              </div>
+            </article>
+          </section>
+        </section>    
+      </section>
     
     <script>
        function closeModal(modalId){
