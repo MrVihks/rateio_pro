@@ -203,12 +203,13 @@
         align-items: center;
         justify-content: center;
 
+
         gap: 10px;
 
         width: 50%;
         padding: 10px;
 
-        position: absolute;
+        position: fixed;
         z-index: 10;
         left: 50%;
         top: 50%;
@@ -366,20 +367,20 @@
       </div>
     </div>
 
-    <section id="main" class="full section hidden">
+    <section id="main" class="full section">
       <h1 class="title">Criar Rateio</h1>
         <article class="card">
             <h2 class="subtitle">Configurações iniciais</h2>
            
             <p class="file_input_container">
                 <label for="rateio_file" class="custom_file_input">
-                  <a class="placeholder">Enviar planilha do GLPI</a>
+                  <a class="placeholder" id="rateio_file_placeholder">Enviar planilha do GLPI</a>
                   <input type="file" name="rateio_file" id="rateio_file" class="input" accept=".xls, .xlsx, .csv">
                 </label>
             </p>
             <p class="file_input_container">
               <label for="ponto_file" class="custom_file_input">
-                <a class="placeholder">Enviar planilha do ponto</a>
+                <a class="placeholder" id="ponto_file_placeholder">Enviar planilha do ponto</a>
                 <input type="file" name="ponto_file" id="ponto_file" class="input" accept=".xls, .xlsx, .csv">
               </label>
             </p>
@@ -391,7 +392,7 @@
         </article>
     </section>
 
-    <section id="tickets" class="full section">
+    <section id="tickets" class="full section hidden">
         <h1 id="ticket_title" class="title" style="font-weight: 500;">Entrega de cadeiras(<a id="ticket_url" style="text-decoration: underline; cursor: pointer;" class="bold title">995954</a>)</h1>
 
         <section class="ticket_container">
@@ -458,6 +459,20 @@
           modal.classList.remove("hidden")
           modal.classList.add("modal")
         }
+    </script>
+
+    <script>
+        function onFileChange(inputId, placeholderId){
+          const input = document.querySelector(inputId);
+          const placeholder = document.querySelector(placeholderId);
+          input.addEventListener("change",(e)=>{
+            const fileName = e.target.files[0].name;
+              e.target.files.length > 0 ? placeholder.innerText = fileName : "Nenhum arquivo selecionado"
+          })
+        }
+        
+        onFileChange("#rateio_file","#rateio_file_placeholder");
+        onFileChange("#ponto_file", "#ponto_file_placeholder");
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
